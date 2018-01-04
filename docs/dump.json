@@ -22,7 +22,7 @@
     "longname": "src/controller/authorization.js~delay",
     "access": "private",
     "export": false,
-    "importPath": "npr-one-sdk/controller/authorization.js",
+    "importPath": "@npr/npr-one-sdk/controller/authorization.js",
     "importStyle": null,
     "description": "Simulates a delay by wrapping a Promise around JavaScript's native `setTimeout` function.",
     "lineNumber": 16,
@@ -68,7 +68,7 @@
     "longname": "src/controller/authorization.js~Authorization",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/controller/authorization.js",
+    "importPath": "@npr/npr-one-sdk/controller/authorization.js",
     "importStyle": "Authorization",
     "description": "Encapsulates all of the logic for communication with the [Authorization Service](https://dev.npr.org/api/#/authorization)\nin the NPR One API.\n\nNote that consumers should not be accessing this class directly but should instead use the provided pass-through\nfunctions in the main {@link NprOneSDK} class.",
     "examples": [
@@ -363,7 +363,7 @@
     "longname": "src/controller/identity.js~Identity",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/controller/identity.js",
+    "importPath": "@npr/npr-one-sdk/controller/identity.js",
     "importStyle": "Identity",
     "description": "Encapsulates all of the logic for communication with the [Identity Service](https://dev.npr.org/api/#/identity)\nin the NPR One API.\n\nNote that consumers should not be accessing this class directly but should instead use the provided pass-through\nfunctions in the main {@link NprOneSDK} class.",
     "examples": [
@@ -653,7 +653,7 @@
     "longname": "src/controller/listening.js~Listening",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/controller/listening.js",
+    "importPath": "@npr/npr-one-sdk/controller/listening.js",
     "importStyle": "Listening",
     "description": "Encapsulates all of the logic for communication with the [Listening Service](https://dev.npr.org/api/#/listening)\nin the NPR One API.\n\nNote that consumers should not be accessing this class directly but should instead use the provided pass-through\nfunctions in the main {@link NprOneSDK} class.",
     "examples": [
@@ -1758,7 +1758,7 @@
     "longname": "src/controller/station-finder.js~StationFinder",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/controller/station-finder.js",
+    "importPath": "@npr/npr-one-sdk/controller/station-finder.js",
     "importStyle": "StationFinder",
     "description": "Encapsulates all of the logic for communication with the [Station Finder Service](https://dev.npr.org/api/#/stationfinder)\nin the NPR One API.\n\nNote that consumers should not be accessing this class directly but should instead use the provided pass-through\nfunctions in the main {@link NprOneSDK} class.",
     "examples": [
@@ -2170,7 +2170,7 @@
     "longname": "src/error/api-error.js~ApiError",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/error/api-error.js",
+    "importPath": "@npr/npr-one-sdk/error/api-error.js",
     "importStyle": "ApiError",
     "description": "A custom error class to encapsulate errors thrown by {@link FetchUtil.nprApiFetch}. Behaves like a generic JavaScript\nerror, but has additional metadata attached to it in case consuming code needs to be able to respond to specific\nkinds of errors.",
     "examples": [
@@ -2350,7 +2350,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import 'isomorphic-fetch';\nimport Action from './model/action';\nimport Logger from './util/logger';\nimport Authorization from './controller/authorization';\nimport Listening from './controller/listening';\nimport Identity from './controller/identity';\nimport StationFinder from './controller/station-finder';\n\nLogger.setLevel(Logger.WARN);\n\n/**\n * This SDK attempts to abstract away most of the interaction with the NPR One API.\n * In general, a consumer of this API should be primarily concerned with asking for\n * recommendations and recording user actions against those recommendations.\n */\nexport default class NprOneSDK\n{\n    /**\n     * Instantiates the NPR One SDK.\n     */\n    constructor() {\n        /** @type {null|Function} A callback that gets triggered whenever the access token has changed\n         * @private */\n        this._accessTokenChangedCallback = null;\n        /** @type {Authorization}\n         * @private */\n        this._authorization = new Authorization();\n        /** @type {Listening}\n         * @private */\n        this._listening = new Listening();\n        /** @type {Identity}\n         * @private */\n        this._identity = new Identity();\n        /** @type {StationFinder}\n         * @private */\n        this._stationfinder = new StationFinder();\n\n        // setup the default config\n        NprOneSDK.config; // eslint-disable-line\n    }\n\n    /**\n     * @typedef {Object} Config\n     * @property {string} [apiBaseUrl='https://api.npr.org'] The NPR One API hostname and protocol, typically `https://api.npr.org`; in most cases, this does not need to be manually set by clients\n     * @property {string} [apiVersion='v2'] The NPR One API version, typically `v2`; in most cases, this does not need to be manually set by clients\n     * @property {string} [authProxyBaseUrl] The full URL to your OAuth proxy, e.g. `https://one.example.com/oauth2/`\n     * @property {string} [newDeviceCodePath='/device'] The path to your proxy for starting a `device_code` grant (relative to `authProxyBaseUrl`)\n     * @property {string} [pollDeviceCodePath='/device/poll'] The path to your proxy for polling a `device_code` grant (relative to `authProxyBaseUrl`)\n     * @property {string} [refreshTokenPath='/refresh'] The path to your proxy for the `refresh_token` grant (relative to `authProxyBaseUrl`)\n     * @property {string} [tempUserPath='/temporary'] The path to your proxy for the `temporary_user` grant (relative to `authProxyBaseUrl`), not available to third-party clients\n     * @property {string} [logoutPath='/logout'] The path to your proxy for the `POST /authorization/v2/token/revoke` endpoint (relative to `authProxyBaseUrl`)\n     * @property {string} [accessToken] The access token to use if not using the auth proxy\n     * @property {string} [clientId] The NPR One API `client_id` to use, only required if using the auth proxy with the `temporary_user` grant type\n     * @property {string} [advertisingId] The custom X-Advertising-ID header to send with most requests, not typically used by third-party clients\n     * @property {string} [advertisingTarget] The custom X-Advertising-Target header to send with most requests, not typically used by third-party clients\n     */\n    /**\n     * @type {Config}\n     */\n    static get config() {\n        if (!NprOneSDK._config) {\n            NprOneSDK._config = {\n                apiBaseUrl: 'https://api.npr.org',\n                apiVersion: 'v2',\n                authProxyBaseUrl: '',\n                newDeviceCodePath: '/device',\n                pollDeviceCodePath: '/device/poll',\n                refreshTokenPath: '/refresh',\n                tempUserPath: '/temporary',\n                logoutPath: '/logout',\n                accessToken: '',\n                clientId: '',\n                advertisingId: '',\n                advertisingTarget: '',\n            };\n        }\n\n        /** @type {Config} */\n        return NprOneSDK._config;\n    }\n\n    /**\n     * Updates private `_config` member attributes but does not overwrite entire `_config` object\n     *\n     * @type {Config}\n     */\n    static set config(value) {\n        if (!NprOneSDK._config) {\n            NprOneSDK.config; // eslint-disable-line\n        }\n        Object.assign(NprOneSDK._config, value);\n    }\n\n    /** @type {string} */\n    static get accessToken() {\n        return NprOneSDK.config.accessToken;\n    }\n\n    /** @type {string} */\n    static set accessToken(token) {\n        if (typeof token !== 'string') {\n            throw new TypeError('Value for accessToken must be a string');\n        }\n\n        const oldToken = NprOneSDK.accessToken;\n        NprOneSDK.config.accessToken = token;\n\n        if (oldToken !== token && typeof NprOneSDK._accessTokenChangedCallback === 'function') {\n            NprOneSDK._accessTokenChangedCallback(token);\n        }\n    }\n\n    /**\n     * Sets a callback to be triggered whenever the SDK rotates the access token for a new one, usually when\n     * the old token expires and a `refresh_token` is used to generate a fresh token. Clients who wish to persist\n     * access tokens across sessions are urged to use this callback to be notified whenever a token change has\n     * occurred; the only other alternative is to call `get accessToken()` after every API call.\n     *\n     * @type {Function}\n     * @throws {TypeError} if the passed-in value isn't a function\n     */\n    static set onAccessTokenChanged(callback) {\n        if (typeof callback !== 'function') {\n            throw new TypeError('Value for onAccessTokenChanged must be a function');\n        }\n        NprOneSDK._accessTokenChangedCallback = callback;\n    }\n\n    /**\n     * Exposes the Action class for clients to record actions\n     *\n     * @type {Action}\n     */\n    static get Action() {\n        return Action;\n    }\n\n    /**\n     * Exposes the Logger class for clients to adjust logging if desired\n     *\n     * @type {src/util/logger.js~Logger}\n     */\n    static get Logger() {\n        return Logger;\n    }\n\n    /* Authorization */\n\n    /**\n     * See {@link Authorization.refreshExistingAccessToken} for description.\n     *\n     * @param {number} [numRetries=0]   The number of times this function has been tried. Will retry up to 3 times.\n     * @returns {Promise<AccessToken>}\n     * @throws {TypeError} if an OAuth proxy is not configured or no access token is set\n     */\n    static refreshExistingAccessToken(numRetries = 0) {\n        return Authorization.refreshExistingAccessToken(numRetries);\n    }\n\n    /**\n     * See {@link Authorization#logout} for description.\n     *\n     * @returns {Promise}\n     * @throws {TypeError} if an OAuth proxy is not configured or no access token is currently set\n     */\n    logout() {\n        return this._authorization.logout();\n    }\n\n    /**\n     * See {@link Authorization#getDeviceCode} for description.\n     *\n     * @param {Array<string>} [scopes=[]]   The scopes (as strings) that should be associated with the resulting access token\n     * @returns {Promise<DeviceCode>}\n     * @throws {TypeError} if an OAuth proxy is not configured\n     */\n    getDeviceCode(scopes = []) {\n        return this._authorization.getDeviceCode(scopes);\n    }\n\n    /**\n     * See {@link Authorization#pollDeviceCode} for description.\n     *\n     * @returns {Promise<AccessToken>}\n     * @throws {TypeError} if an OAuth proxy is not configured or `getDeviceCode()` was not previously called\n     */\n    pollDeviceCode() {\n        return this._authorization.pollDeviceCode();\n    }\n\n    /* Listening */\n\n    /**\n     * See {@link Listening#getRecommendation} for description.\n     *\n     * @param {string} [uid='']           Optional; a UID for a specific recommendation to play. In 99% of use cases, this is not needed.\n     * @param {string} [channel='npr']    Optional; a channel to pull the recommendation from; the main flow channel of `npr` is used as the default. In 99% of use cases, this does not need to be changed.\n     * @returns {Promise<Recommendation>}\n     */\n    getRecommendation(uid = '', channel = 'npr') {\n        return this._listening.getRecommendation(uid, channel);\n    }\n\n    /**\n     * See {@link Listening#resumeFlowFromRecommendation} for description.\n     *\n     * @param {Object} json JSON object representation of a recommendation\n     * @returns {Recommendation}\n     */\n    resumeFlowFromRecommendation(json) {\n        return this._listening.resumeFlowFromRecommendation(json);\n    }\n\n    /**\n     * See {@link Listening#getUpcomingFlowRecommendations} for description.\n     *\n     * @experimental\n     * @param {string} [channel='npr']   A channel to pull the next recommendation from\n     * @returns {Promise<Array<Recommendation>>}\n     */\n    getUpcomingFlowRecommendations(channel = 'npr') {\n        return this._listening.getUpcomingFlowRecommendations(channel);\n    }\n\n    /**\n     * See {@link Listening#getRecommendationsFromChannel} for description.\n     *\n     * @param {string} [channel='recommended']   A non-flow (i.e. non-`npr`) channel to retrieve a list of recommendations from\n     * @returns {Promise<Array<Recommendation>>}\n     */\n    getRecommendationsFromChannel(channel = 'recommended') {\n        return this._listening.getRecommendationsFromChannel(channel);\n    }\n\n    /**\n     * See {@link Listening#queueRecommendationFromChannel} for description.\n     *\n     * @param {string} channel   The channel used in the original call to `getRecommendationsFromChannel()`\n     * @param {string} uid       The unique ID of the item to queue up for the user\n     * @returns {Recommendation}\n     * @throws {TypeError} If no valid channel or UID is passed in\n     * @throws {Error} If no recommendations for this channel were previously cached, or if the UID was not found in that cached list\n     */\n    queueRecommendationFromChannel(channel, uid) {\n        return this._listening.queueRecommendationFromChannel(channel, uid);\n    }\n\n    /**\n     * See {@link Listening#getHistory} for description.\n     *\n     * @returns {Promise<Array<Recommendation>>}\n     */\n    getHistory() {\n        return this._listening.getHistory();\n    }\n\n    /**\n     * See {@link Listening#resetFlow} for description.\n     *\n     * @returns {Promise}\n     */\n    resetFlow() {\n        return this._listening.resetFlow();\n    }\n\n    /* Identity */\n\n    /**\n     * See {@link Identity#getUser} for description.\n     *\n     * @returns {Promise<User>}\n     */\n    getUser() {\n        return this._identity.getUser();\n    }\n\n    /**\n     * See {@link Identity#setUserStation} for description.\n     *\n     * @param {number|string} stationId   The station's ID, which is either an integer or a numeric string (e.g. `123` or `'123'`)\n     * @returns {Promise<User>}\n     */\n    setUserStation(stationId) {\n        return this._identity.setUserStation(stationId);\n    }\n\n    /**\n     * See {@link Identity#followShow} for description.\n     *\n     * @param {number|string} aggregationId    The aggregation (show) ID, which is either an integer or a numeric string (e.g. `123` or `'123'`)\n     * @returns {Promise<User>}\n     * @throws {TypeError} if the passed-in aggregation (show) ID is not either a number or a numeric string\n     */\n    followShow(aggregationId) {\n        return this._identity.followShow(aggregationId);\n    }\n\n    /**\n     * See {@link Identity#unfollowShow} for description.\n     *\n     * @param {number|string} aggregationId    The aggregation (show) ID, which is either an integer or a numeric string (e.g. `123` or `'123'`)\n     * @returns {Promise<User>}\n     * @throws {TypeError} if the passed-in aggregation (show) ID is not either a number or a numeric string\n     */\n    unfollowShow(aggregationId) {\n        return this._identity.unfollowShow(aggregationId);\n    }\n\n    /**\n     * See {@link Identity#createTemporaryUser} for description.\n     *\n     * @returns {Promise<User>}\n     * @throws {TypeError} if an OAuth proxy is not configured or no client ID is set\n     */\n    createTemporaryUser() {\n        return this._identity.createTemporaryUser();\n    }\n\n    /* Station Finder */\n\n    /**\n     * See {@link StationFinder#searchStations} for description.\n     *\n     * @param {null|string} [query]   An optional query, which can be a station name, network name, or zip code\n     * @returns {Promise<Array<Station>>}\n     */\n    searchStations(query = null) {\n        return this._stationfinder.searchStations(query);\n    }\n\n    /**\n     * See {@link StationFinder#searchStationsByLatLongCoordinates} for description.\n     *\n     * @param {number} lat    A float representing the latitude value of the geographic coordinates\n     * @param {number} long   A float representing the longitude value of the geographic coordinates\n     * @returns {Promise<Array<Station>>}\n     */\n    searchStationsByLatLongCoordinates(lat, long) {\n        return this._stationfinder.searchStationsByLatLongCoordinates(lat, long);\n    }\n\n    /**\n     * See {@link StationFinder#searchStationsByCityAndState} for description.\n     *\n     * @param {string} city     A full city name (e.g. \"New York\", \"San Francisco\", \"Phoenix\")\n     * @param {string} state    A state name (e.g. \"Maryland\") or abbreviation (e.g. \"MD\")\n     * @returns {Promise<Array<Station>>}\n     */\n    searchStationsByCityAndState(city, state) {\n        return this._stationfinder.searchStationsByCityAndState(city, state);\n    }\n\n    /**\n     * See {@link StationFinder#searchStationsByCity} for description.\n     *\n     * @param {string} city   A full city name (e.g. \"New York\", \"San Francisco\", \"Phoenix\")\n     * @returns {Promise<Array<Station>>}\n     */\n    searchStationsByCity(city) {\n        return this._stationfinder.searchStationsByCity(city);\n    }\n\n    /**\n     * See {@link StationFinder#searchStationsByState} for description.\n     *\n     * @param {string} state    A state name (e.g. \"Maryland\") or abbreviation (e.g. \"MD\")\n     * @returns {Promise<Array<Station>>}\n     */\n    searchStationsByState(state) {\n        return this._stationfinder.searchStationsByState(state);\n    }\n\n    /**\n     * See {@link StationFinder#getStationDetails} for description.\n     *\n     * @param {number|string} stationId   The station's ID, which is either an integer or a numeric string (e.g. `123` or `'123'`)\n     * @returns {Promise<Station>}\n     */\n    getStationDetails(stationId) {\n        return this._stationfinder.getStationDetails(stationId);\n    }\n\n    /**\n     * Returns the foundational path for a given service\n     *\n     * @param {string} service\n     * @returns {string}\n     */\n    static getServiceUrl(service) {\n        // @TODO we need to figure out a better long-term solution for the individually-versioned services\n        if (service === 'stationfinder') {\n            return `${NprOneSDK.config.apiBaseUrl}/${service}/v3`;\n        }\n        return `${NprOneSDK.config.apiBaseUrl}/${service}/${NprOneSDK.config.apiVersion}`;\n    }\n}\n\n/**\n * @external {Response} https://developer.mozilla.org/en-US/docs/Web/API/Response\n */\n/**\n * @external {Headers} https://developer.mozilla.org/en-US/docs/Web/API/Headers\n */\n/**\n * @external {JsLogger} https://github.com/jonnyreeves/js-logger\n */\n"
+    "content": "import 'isomorphic-fetch';\nimport Action from './model/action';\nimport Logger from './util/logger';\nimport Authorization from './controller/authorization';\nimport Listening from './controller/listening';\nimport Identity from './controller/identity';\nimport StationFinder from './controller/station-finder';\n\nLogger.setLevel(Logger.WARN);\n\n/**\n * This SDK attempts to abstract away most of the interaction with the NPR One API.\n * In general, a consumer of this API should be primarily concerned with asking for\n * recommendations and recording user actions against those recommendations.\n */\nexport class NprOneSDK {\n    /**\n     * Instantiates the NPR One SDK.\n     */\n    constructor() {\n        /** @type {null|Function} A callback that gets triggered whenever the access token has changed\n         * @private */\n        this._accessTokenChangedCallback = null;\n        /** @type {Authorization}\n         * @private */\n        this._authorization = new Authorization();\n        /** @type {Listening}\n         * @private */\n        this._listening = new Listening();\n        /** @type {Identity}\n         * @private */\n        this._identity = new Identity();\n        /** @type {StationFinder}\n         * @private */\n        this._stationfinder = new StationFinder();\n\n        // setup the default config\n        NprOneSDK.config; // eslint-disable-line\n    }\n\n    /**\n     * @typedef {Object} Config\n     * @property {string} [apiBaseUrl='https://api.npr.org'] The NPR One API hostname and protocol, typically `https://api.npr.org`; in most cases, this does not need to be manually set by clients\n     * @property {string} [apiVersion='v2'] The NPR One API version, typically `v2`; in most cases, this does not need to be manually set by clients\n     * @property {string} [authProxyBaseUrl] The full URL to your OAuth proxy, e.g. `https://one.example.com/oauth2/`\n     * @property {string} [newDeviceCodePath='/device'] The path to your proxy for starting a `device_code` grant (relative to `authProxyBaseUrl`)\n     * @property {string} [pollDeviceCodePath='/device/poll'] The path to your proxy for polling a `device_code` grant (relative to `authProxyBaseUrl`)\n     * @property {string} [refreshTokenPath='/refresh'] The path to your proxy for the `refresh_token` grant (relative to `authProxyBaseUrl`)\n     * @property {string} [tempUserPath='/temporary'] The path to your proxy for the `temporary_user` grant (relative to `authProxyBaseUrl`), not available to third-party clients\n     * @property {string} [logoutPath='/logout'] The path to your proxy for the `POST /authorization/v2/token/revoke` endpoint (relative to `authProxyBaseUrl`)\n     * @property {string} [accessToken] The access token to use if not using the auth proxy\n     * @property {string} [clientId] The NPR One API `client_id` to use, only required if using the auth proxy with the `temporary_user` grant type\n     * @property {string} [advertisingId] The custom X-Advertising-ID header to send with most requests, not typically used by third-party clients\n     * @property {string} [advertisingTarget] The custom X-Advertising-Target header to send with most requests, not typically used by third-party clients\n     */\n    /**\n     * @type {Config}\n     */\n    static get config() {\n        if (!NprOneSDK._config) {\n            NprOneSDK._config = {\n                apiBaseUrl: 'https://api.npr.org',\n                apiVersion: 'v2',\n                authProxyBaseUrl: '',\n                newDeviceCodePath: '/device',\n                pollDeviceCodePath: '/device/poll',\n                refreshTokenPath: '/refresh',\n                tempUserPath: '/temporary',\n                logoutPath: '/logout',\n                accessToken: '',\n                clientId: '',\n                advertisingId: '',\n                advertisingTarget: '',\n            };\n        }\n\n        /** @type {Config} */\n        return NprOneSDK._config;\n    }\n\n    /**\n     * Updates private `_config` member attributes but does not overwrite entire `_config` object\n     *\n     * @type {Config}\n     */\n    static set config(value) {\n        if (!NprOneSDK._config) {\n            NprOneSDK.config; // eslint-disable-line\n        }\n        Object.assign(NprOneSDK._config, value);\n    }\n\n    /** @type {string} */\n    static get accessToken() {\n        return NprOneSDK.config.accessToken;\n    }\n\n    /** @type {string} */\n    static set accessToken(token) {\n        if (typeof token !== 'string') {\n            throw new TypeError('Value for accessToken must be a string');\n        }\n\n        const oldToken = NprOneSDK.accessToken;\n        NprOneSDK.config.accessToken = token;\n\n        if (oldToken !== token && typeof NprOneSDK._accessTokenChangedCallback === 'function') {\n            NprOneSDK._accessTokenChangedCallback(token);\n        }\n    }\n\n    /**\n     * Sets a callback to be triggered whenever the SDK rotates the access token for a new one, usually when\n     * the old token expires and a `refresh_token` is used to generate a fresh token. Clients who wish to persist\n     * access tokens across sessions are urged to use this callback to be notified whenever a token change has\n     * occurred; the only other alternative is to call `get accessToken()` after every API call.\n     *\n     * @type {Function}\n     * @throws {TypeError} if the passed-in value isn't a function\n     */\n    static set onAccessTokenChanged(callback) {\n        if (typeof callback !== 'function') {\n            throw new TypeError('Value for onAccessTokenChanged must be a function');\n        }\n        NprOneSDK._accessTokenChangedCallback = callback;\n    }\n\n    /**\n     * Exposes the Action class for clients to record actions\n     *\n     * @type {Action}\n     */\n    static get Action() {\n        return Action;\n    }\n\n    /**\n     * Exposes the Logger class for clients to adjust logging if desired\n     *\n     * @type {src/util/logger.js~Logger}\n     */\n    static get Logger() {\n        return Logger;\n    }\n\n    /* Authorization */\n\n    /**\n     * See {@link Authorization.refreshExistingAccessToken} for description.\n     *\n     * @param {number} [numRetries=0]   The number of times this function has been tried. Will retry up to 3 times.\n     * @returns {Promise<AccessToken>}\n     * @throws {TypeError} if an OAuth proxy is not configured or no access token is set\n     */\n    static refreshExistingAccessToken(numRetries = 0) {\n        return Authorization.refreshExistingAccessToken(numRetries);\n    }\n\n    /**\n     * See {@link Authorization#logout} for description.\n     *\n     * @returns {Promise}\n     * @throws {TypeError} if an OAuth proxy is not configured or no access token is currently set\n     */\n    logout() {\n        return this._authorization.logout();\n    }\n\n    /**\n     * See {@link Authorization#getDeviceCode} for description.\n     *\n     * @param {Array<string>} [scopes=[]]   The scopes (as strings) that should be associated with the resulting access token\n     * @returns {Promise<DeviceCode>}\n     * @throws {TypeError} if an OAuth proxy is not configured\n     */\n    getDeviceCode(scopes = []) {\n        return this._authorization.getDeviceCode(scopes);\n    }\n\n    /**\n     * See {@link Authorization#pollDeviceCode} for description.\n     *\n     * @returns {Promise<AccessToken>}\n     * @throws {TypeError} if an OAuth proxy is not configured or `getDeviceCode()` was not previously called\n     */\n    pollDeviceCode() {\n        return this._authorization.pollDeviceCode();\n    }\n\n    /* Listening */\n\n    /**\n     * See {@link Listening#getRecommendation} for description.\n     *\n     * @param {string} [uid='']           Optional; a UID for a specific recommendation to play. In 99% of use cases, this is not needed.\n     * @param {string} [channel='npr']    Optional; a channel to pull the recommendation from; the main flow channel of `npr` is used as the default. In 99% of use cases, this does not need to be changed.\n     * @returns {Promise<Recommendation>}\n     */\n    getRecommendation(uid = '', channel = 'npr') {\n        return this._listening.getRecommendation(uid, channel);\n    }\n\n    /**\n     * See {@link Listening#resumeFlowFromRecommendation} for description.\n     *\n     * @param {Object} json JSON object representation of a recommendation\n     * @returns {Recommendation}\n     */\n    resumeFlowFromRecommendation(json) {\n        return this._listening.resumeFlowFromRecommendation(json);\n    }\n\n    /**\n     * See {@link Listening#getUpcomingFlowRecommendations} for description.\n     *\n     * @experimental\n     * @param {string} [channel='npr']   A channel to pull the next recommendation from\n     * @returns {Promise<Array<Recommendation>>}\n     */\n    getUpcomingFlowRecommendations(channel = 'npr') {\n        return this._listening.getUpcomingFlowRecommendations(channel);\n    }\n\n    /**\n     * See {@link Listening#getRecommendationsFromChannel} for description.\n     *\n     * @param {string} [channel='recommended']   A non-flow (i.e. non-`npr`) channel to retrieve a list of recommendations from\n     * @returns {Promise<Array<Recommendation>>}\n     */\n    getRecommendationsFromChannel(channel = 'recommended') {\n        return this._listening.getRecommendationsFromChannel(channel);\n    }\n\n    /**\n     * See {@link Listening#queueRecommendationFromChannel} for description.\n     *\n     * @param {string} channel   The channel used in the original call to `getRecommendationsFromChannel()`\n     * @param {string} uid       The unique ID of the item to queue up for the user\n     * @returns {Recommendation}\n     * @throws {TypeError} If no valid channel or UID is passed in\n     * @throws {Error} If no recommendations for this channel were previously cached, or if the UID was not found in that cached list\n     */\n    queueRecommendationFromChannel(channel, uid) {\n        return this._listening.queueRecommendationFromChannel(channel, uid);\n    }\n\n    /**\n     * See {@link Listening#getHistory} for description.\n     *\n     * @returns {Promise<Array<Recommendation>>}\n     */\n    getHistory() {\n        return this._listening.getHistory();\n    }\n\n    /**\n     * See {@link Listening#resetFlow} for description.\n     *\n     * @returns {Promise}\n     */\n    resetFlow() {\n        return this._listening.resetFlow();\n    }\n\n    /* Identity */\n\n    /**\n     * See {@link Identity#getUser} for description.\n     *\n     * @returns {Promise<User>}\n     */\n    getUser() {\n        return this._identity.getUser();\n    }\n\n    /**\n     * See {@link Identity#setUserStation} for description.\n     *\n     * @param {number|string} stationId   The station's ID, which is either an integer or a numeric string (e.g. `123` or `'123'`)\n     * @returns {Promise<User>}\n     */\n    setUserStation(stationId) {\n        return this._identity.setUserStation(stationId);\n    }\n\n    /**\n     * See {@link Identity#followShow} for description.\n     *\n     * @param {number|string} aggregationId    The aggregation (show) ID, which is either an integer or a numeric string (e.g. `123` or `'123'`)\n     * @returns {Promise<User>}\n     * @throws {TypeError} if the passed-in aggregation (show) ID is not either a number or a numeric string\n     */\n    followShow(aggregationId) {\n        return this._identity.followShow(aggregationId);\n    }\n\n    /**\n     * See {@link Identity#unfollowShow} for description.\n     *\n     * @param {number|string} aggregationId    The aggregation (show) ID, which is either an integer or a numeric string (e.g. `123` or `'123'`)\n     * @returns {Promise<User>}\n     * @throws {TypeError} if the passed-in aggregation (show) ID is not either a number or a numeric string\n     */\n    unfollowShow(aggregationId) {\n        return this._identity.unfollowShow(aggregationId);\n    }\n\n    /**\n     * See {@link Identity#createTemporaryUser} for description.\n     *\n     * @returns {Promise<User>}\n     * @throws {TypeError} if an OAuth proxy is not configured or no client ID is set\n     */\n    createTemporaryUser() {\n        return this._identity.createTemporaryUser();\n    }\n\n    /* Station Finder */\n\n    /**\n     * See {@link StationFinder#searchStations} for description.\n     *\n     * @param {null|string} [query]   An optional query, which can be a station name, network name, or zip code\n     * @returns {Promise<Array<Station>>}\n     */\n    searchStations(query = null) {\n        return this._stationfinder.searchStations(query);\n    }\n\n    /**\n     * See {@link StationFinder#searchStationsByLatLongCoordinates} for description.\n     *\n     * @param {number} lat    A float representing the latitude value of the geographic coordinates\n     * @param {number} long   A float representing the longitude value of the geographic coordinates\n     * @returns {Promise<Array<Station>>}\n     */\n    searchStationsByLatLongCoordinates(lat, long) {\n        return this._stationfinder.searchStationsByLatLongCoordinates(lat, long);\n    }\n\n    /**\n     * See {@link StationFinder#searchStationsByCityAndState} for description.\n     *\n     * @param {string} city     A full city name (e.g. \"New York\", \"San Francisco\", \"Phoenix\")\n     * @param {string} state    A state name (e.g. \"Maryland\") or abbreviation (e.g. \"MD\")\n     * @returns {Promise<Array<Station>>}\n     */\n    searchStationsByCityAndState(city, state) {\n        return this._stationfinder.searchStationsByCityAndState(city, state);\n    }\n\n    /**\n     * See {@link StationFinder#searchStationsByCity} for description.\n     *\n     * @param {string} city   A full city name (e.g. \"New York\", \"San Francisco\", \"Phoenix\")\n     * @returns {Promise<Array<Station>>}\n     */\n    searchStationsByCity(city) {\n        return this._stationfinder.searchStationsByCity(city);\n    }\n\n    /**\n     * See {@link StationFinder#searchStationsByState} for description.\n     *\n     * @param {string} state    A state name (e.g. \"Maryland\") or abbreviation (e.g. \"MD\")\n     * @returns {Promise<Array<Station>>}\n     */\n    searchStationsByState(state) {\n        return this._stationfinder.searchStationsByState(state);\n    }\n\n    /**\n     * See {@link StationFinder#getStationDetails} for description.\n     *\n     * @param {number|string} stationId   The station's ID, which is either an integer or a numeric string (e.g. `123` or `'123'`)\n     * @returns {Promise<Station>}\n     */\n    getStationDetails(stationId) {\n        return this._stationfinder.getStationDetails(stationId);\n    }\n\n    /**\n     * Returns the foundational path for a given service\n     *\n     * @param {string} service\n     * @returns {string}\n     */\n    static getServiceUrl(service) {\n        // @TODO we need to figure out a better long-term solution for the individually-versioned services\n        if (service === 'stationfinder') {\n            return `${NprOneSDK.config.apiBaseUrl}/${service}/v3`;\n        }\n        return `${NprOneSDK.config.apiBaseUrl}/${service}/${NprOneSDK.config.apiVersion}`;\n    }\n}\nexport default NprOneSDK;\n\n/**\n * @external {Response} https://developer.mozilla.org/en-US/docs/Web/API/Response\n */\n/**\n * @external {Headers} https://developer.mozilla.org/en-US/docs/Web/API/Headers\n */\n/**\n * @external {JsLogger} https://github.com/jonnyreeves/js-logger\n */\n"
   },
   {
     "__docId__": 79,
@@ -2362,50 +2362,14 @@
     "longname": "src/index.js~NprOneSDK",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/index.js",
-    "importStyle": "NprOneSDK",
+    "importPath": "@npr/npr-one-sdk/index.js",
+    "importStyle": "{NprOneSDK}",
     "description": "This SDK attempts to abstract away most of the interaction with the NPR One API.\nIn general, a consumer of this API should be primarily concerned with asking for\nrecommendations and recording user actions against those recommendations.",
     "lineNumber": 16,
     "interface": false
   },
   {
     "__docId__": 80,
-    "kind": "external",
-    "static": true,
-    "variation": null,
-    "name": "Response",
-    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Response",
-    "memberof": "src/index.js",
-    "longname": "src/index.js~Response",
-    "access": null,
-    "description": ""
-  },
-  {
-    "__docId__": 81,
-    "kind": "external",
-    "static": true,
-    "variation": null,
-    "name": "Headers",
-    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Headers",
-    "memberof": "src/index.js",
-    "longname": "src/index.js~Headers",
-    "access": null,
-    "description": ""
-  },
-  {
-    "__docId__": 82,
-    "kind": "external",
-    "static": true,
-    "variation": null,
-    "name": "JsLogger",
-    "externalLink": "https://github.com/jonnyreeves/js-logger",
-    "memberof": "src/index.js",
-    "longname": "src/index.js~JsLogger",
-    "access": null,
-    "description": ""
-  },
-  {
-    "__docId__": 83,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -2414,12 +2378,12 @@
     "longname": "src/index.js~NprOneSDK#constructor",
     "access": null,
     "description": "Instantiates the NPR One SDK.",
-    "lineNumber": 21,
+    "lineNumber": 20,
     "params": [],
     "generator": false
   },
   {
-    "__docId__": 84,
+    "__docId__": 81,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2428,7 +2392,7 @@
     "longname": "src/index.js~NprOneSDK#_accessTokenChangedCallback",
     "access": "private",
     "description": null,
-    "lineNumber": 24,
+    "lineNumber": 23,
     "type": {
       "nullable": null,
       "types": [
@@ -2440,7 +2404,7 @@
     }
   },
   {
-    "__docId__": 85,
+    "__docId__": 82,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2449,7 +2413,7 @@
     "longname": "src/index.js~NprOneSDK#_authorization",
     "access": "private",
     "description": null,
-    "lineNumber": 27,
+    "lineNumber": 26,
     "type": {
       "nullable": null,
       "types": [
@@ -2460,7 +2424,7 @@
     }
   },
   {
-    "__docId__": 86,
+    "__docId__": 83,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2469,7 +2433,7 @@
     "longname": "src/index.js~NprOneSDK#_listening",
     "access": "private",
     "description": null,
-    "lineNumber": 30,
+    "lineNumber": 29,
     "type": {
       "nullable": null,
       "types": [
@@ -2480,7 +2444,7 @@
     }
   },
   {
-    "__docId__": 87,
+    "__docId__": 84,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2489,7 +2453,7 @@
     "longname": "src/index.js~NprOneSDK#_identity",
     "access": "private",
     "description": null,
-    "lineNumber": 33,
+    "lineNumber": 32,
     "type": {
       "nullable": null,
       "types": [
@@ -2500,7 +2464,7 @@
     }
   },
   {
-    "__docId__": 88,
+    "__docId__": 85,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2509,7 +2473,7 @@
     "longname": "src/index.js~NprOneSDK#_stationfinder",
     "access": "private",
     "description": null,
-    "lineNumber": 36,
+    "lineNumber": 35,
     "type": {
       "nullable": null,
       "types": [
@@ -2520,7 +2484,7 @@
     }
   },
   {
-    "__docId__": 89,
+    "__docId__": 86,
     "kind": "typedef",
     "static": true,
     "variation": null,
@@ -2674,7 +2638,7 @@
     }
   },
   {
-    "__docId__": 90,
+    "__docId__": 87,
     "kind": "get",
     "static": true,
     "variation": null,
@@ -2683,11 +2647,74 @@
     "longname": "src/index.js~NprOneSDK.config",
     "access": null,
     "description": "",
-    "lineNumber": 60,
+    "lineNumber": 59,
     "type": {
       "nullable": null,
       "types": [
         "Config"
+      ],
+      "spread": false,
+      "description": null
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 88,
+    "kind": "set",
+    "static": true,
+    "variation": null,
+    "name": "config",
+    "memberof": "src/index.js~NprOneSDK",
+    "longname": "src/index.js~NprOneSDK.config",
+    "access": null,
+    "description": "Updates private `_config` member attributes but does not overwrite entire `_config` object",
+    "lineNumber": 86,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Config"
+      ],
+      "spread": false,
+      "description": null
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 89,
+    "kind": "get",
+    "static": true,
+    "variation": null,
+    "name": "accessToken",
+    "memberof": "src/index.js~NprOneSDK",
+    "longname": "src/index.js~NprOneSDK.accessToken",
+    "access": null,
+    "description": null,
+    "lineNumber": 94,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 90,
+    "kind": "set",
+    "static": true,
+    "variation": null,
+    "name": "accessToken",
+    "memberof": "src/index.js~NprOneSDK",
+    "longname": "src/index.js~NprOneSDK.accessToken",
+    "access": null,
+    "description": null,
+    "lineNumber": 99,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
       ],
       "spread": false,
       "description": null
@@ -2699,75 +2726,12 @@
     "kind": "set",
     "static": true,
     "variation": null,
-    "name": "config",
-    "memberof": "src/index.js~NprOneSDK",
-    "longname": "src/index.js~NprOneSDK.config",
-    "access": null,
-    "description": "Updates private `_config` member attributes but does not overwrite entire `_config` object",
-    "lineNumber": 87,
-    "type": {
-      "nullable": null,
-      "types": [
-        "Config"
-      ],
-      "spread": false,
-      "description": null
-    },
-    "generator": false
-  },
-  {
-    "__docId__": 92,
-    "kind": "get",
-    "static": true,
-    "variation": null,
-    "name": "accessToken",
-    "memberof": "src/index.js~NprOneSDK",
-    "longname": "src/index.js~NprOneSDK.accessToken",
-    "access": null,
-    "description": null,
-    "lineNumber": 95,
-    "type": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": null
-    },
-    "generator": false
-  },
-  {
-    "__docId__": 93,
-    "kind": "set",
-    "static": true,
-    "variation": null,
-    "name": "accessToken",
-    "memberof": "src/index.js~NprOneSDK",
-    "longname": "src/index.js~NprOneSDK.accessToken",
-    "access": null,
-    "description": null,
-    "lineNumber": 100,
-    "type": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": null
-    },
-    "generator": false
-  },
-  {
-    "__docId__": 94,
-    "kind": "set",
-    "static": true,
-    "variation": null,
     "name": "onAccessTokenChanged",
     "memberof": "src/index.js~NprOneSDK",
     "longname": "src/index.js~NprOneSDK.onAccessTokenChanged",
     "access": null,
     "description": "Sets a callback to be triggered whenever the SDK rotates the access token for a new one, usually when\nthe old token expires and a `refresh_token` is used to generate a fresh token. Clients who wish to persist\naccess tokens across sessions are urged to use this callback to be notified whenever a token change has\noccurred; the only other alternative is to call `get accessToken()` after every API call.",
-    "lineNumber": 122,
+    "lineNumber": 121,
     "type": {
       "nullable": null,
       "types": [
@@ -2787,7 +2751,7 @@
     "generator": false
   },
   {
-    "__docId__": 95,
+    "__docId__": 92,
     "kind": "get",
     "static": true,
     "variation": null,
@@ -2796,7 +2760,7 @@
     "longname": "src/index.js~NprOneSDK.Action",
     "access": null,
     "description": "Exposes the Action class for clients to record actions",
-    "lineNumber": 134,
+    "lineNumber": 133,
     "type": {
       "nullable": null,
       "types": [
@@ -2808,7 +2772,7 @@
     "generator": false
   },
   {
-    "__docId__": 96,
+    "__docId__": 93,
     "kind": "get",
     "static": true,
     "variation": null,
@@ -2817,7 +2781,7 @@
     "longname": "src/index.js~NprOneSDK.Logger",
     "access": null,
     "description": "Exposes the Logger class for clients to adjust logging if desired",
-    "lineNumber": 143,
+    "lineNumber": 142,
     "type": {
       "nullable": null,
       "types": [
@@ -2829,7 +2793,7 @@
     "generator": false
   },
   {
-    "__docId__": 97,
+    "__docId__": 94,
     "kind": "method",
     "static": true,
     "variation": null,
@@ -2838,7 +2802,7 @@
     "longname": "src/index.js~NprOneSDK.refreshExistingAccessToken",
     "access": null,
     "description": "See {@link Authorization.refreshExistingAccessToken} for description.",
-    "lineNumber": 156,
+    "lineNumber": 155,
     "unknown": [
       {
         "tagName": "@returns",
@@ -2878,7 +2842,7 @@
     "generator": false
   },
   {
-    "__docId__": 98,
+    "__docId__": 95,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2887,7 +2851,7 @@
     "longname": "src/index.js~NprOneSDK#logout",
     "access": null,
     "description": "See {@link Authorization#logout} for description.",
-    "lineNumber": 166,
+    "lineNumber": 165,
     "unknown": [
       {
         "tagName": "@returns",
@@ -2914,7 +2878,7 @@
     "generator": false
   },
   {
-    "__docId__": 99,
+    "__docId__": 96,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2923,7 +2887,7 @@
     "longname": "src/index.js~NprOneSDK#getDeviceCode",
     "access": null,
     "description": "See {@link Authorization#getDeviceCode} for description.",
-    "lineNumber": 177,
+    "lineNumber": 176,
     "unknown": [
       {
         "tagName": "@returns",
@@ -2963,7 +2927,7 @@
     "generator": false
   },
   {
-    "__docId__": 100,
+    "__docId__": 97,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2972,7 +2936,7 @@
     "longname": "src/index.js~NprOneSDK#pollDeviceCode",
     "access": null,
     "description": "See {@link Authorization#pollDeviceCode} for description.",
-    "lineNumber": 187,
+    "lineNumber": 186,
     "unknown": [
       {
         "tagName": "@returns",
@@ -2999,7 +2963,7 @@
     "generator": false
   },
   {
-    "__docId__": 101,
+    "__docId__": 98,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3008,7 +2972,7 @@
     "longname": "src/index.js~NprOneSDK#getRecommendation",
     "access": null,
     "description": "See {@link Listening#getRecommendation} for description.",
-    "lineNumber": 200,
+    "lineNumber": 199,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3052,7 +3016,7 @@
     "generator": false
   },
   {
-    "__docId__": 102,
+    "__docId__": 99,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3061,7 +3025,7 @@
     "longname": "src/index.js~NprOneSDK#resumeFlowFromRecommendation",
     "access": null,
     "description": "See {@link Listening#resumeFlowFromRecommendation} for description.",
-    "lineNumber": 210,
+    "lineNumber": 209,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3091,7 +3055,7 @@
     "generator": false
   },
   {
-    "__docId__": 103,
+    "__docId__": 100,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3100,7 +3064,7 @@
     "longname": "src/index.js~NprOneSDK#getUpcomingFlowRecommendations",
     "access": null,
     "description": "See {@link Listening#getUpcomingFlowRecommendations} for description.",
-    "lineNumber": 221,
+    "lineNumber": 220,
     "experimental": true,
     "unknown": [
       {
@@ -3133,7 +3097,7 @@
     "generator": false
   },
   {
-    "__docId__": 104,
+    "__docId__": 101,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3142,7 +3106,7 @@
     "longname": "src/index.js~NprOneSDK#getRecommendationsFromChannel",
     "access": null,
     "description": "See {@link Listening#getRecommendationsFromChannel} for description.",
-    "lineNumber": 231,
+    "lineNumber": 230,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3174,7 +3138,7 @@
     "generator": false
   },
   {
-    "__docId__": 105,
+    "__docId__": 102,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3183,7 +3147,7 @@
     "longname": "src/index.js~NprOneSDK#queueRecommendationFromChannel",
     "access": null,
     "description": "See {@link Listening#queueRecommendationFromChannel} for description.",
-    "lineNumber": 244,
+    "lineNumber": 243,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3237,7 +3201,7 @@
     "generator": false
   },
   {
-    "__docId__": 106,
+    "__docId__": 103,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3246,7 +3210,7 @@
     "longname": "src/index.js~NprOneSDK#getHistory",
     "access": null,
     "description": "See {@link Listening#getHistory} for description.",
-    "lineNumber": 253,
+    "lineNumber": 252,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3265,7 +3229,7 @@
     "generator": false
   },
   {
-    "__docId__": 107,
+    "__docId__": 104,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3274,7 +3238,7 @@
     "longname": "src/index.js~NprOneSDK#resetFlow",
     "access": null,
     "description": "See {@link Listening#resetFlow} for description.",
-    "lineNumber": 262,
+    "lineNumber": 261,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3293,7 +3257,7 @@
     "generator": false
   },
   {
-    "__docId__": 108,
+    "__docId__": 105,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3302,7 +3266,7 @@
     "longname": "src/index.js~NprOneSDK#getUser",
     "access": null,
     "description": "See {@link Identity#getUser} for description.",
-    "lineNumber": 273,
+    "lineNumber": 272,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3321,7 +3285,7 @@
     "generator": false
   },
   {
-    "__docId__": 109,
+    "__docId__": 106,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3330,7 +3294,7 @@
     "longname": "src/index.js~NprOneSDK#setUserStation",
     "access": null,
     "description": "See {@link Identity#setUserStation} for description.",
-    "lineNumber": 283,
+    "lineNumber": 282,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3361,7 +3325,7 @@
     "generator": false
   },
   {
-    "__docId__": 110,
+    "__docId__": 107,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3370,7 +3334,7 @@
     "longname": "src/index.js~NprOneSDK#followShow",
     "access": null,
     "description": "See {@link Identity#followShow} for description.",
-    "lineNumber": 294,
+    "lineNumber": 293,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3409,7 +3373,7 @@
     "generator": false
   },
   {
-    "__docId__": 111,
+    "__docId__": 108,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3418,7 +3382,7 @@
     "longname": "src/index.js~NprOneSDK#unfollowShow",
     "access": null,
     "description": "See {@link Identity#unfollowShow} for description.",
-    "lineNumber": 305,
+    "lineNumber": 304,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3457,7 +3421,7 @@
     "generator": false
   },
   {
-    "__docId__": 112,
+    "__docId__": 109,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3466,7 +3430,7 @@
     "longname": "src/index.js~NprOneSDK#createTemporaryUser",
     "access": null,
     "description": "See {@link Identity#createTemporaryUser} for description.",
-    "lineNumber": 315,
+    "lineNumber": 314,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3493,7 +3457,7 @@
     "generator": false
   },
   {
-    "__docId__": 113,
+    "__docId__": 110,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3502,7 +3466,7 @@
     "longname": "src/index.js~NprOneSDK#searchStations",
     "access": null,
     "description": "See {@link StationFinder#searchStations} for description.",
-    "lineNumber": 327,
+    "lineNumber": 326,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3533,7 +3497,7 @@
     "generator": false
   },
   {
-    "__docId__": 114,
+    "__docId__": 111,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3542,7 +3506,7 @@
     "longname": "src/index.js~NprOneSDK#searchStationsByLatLongCoordinates",
     "access": null,
     "description": "See {@link StationFinder#searchStationsByLatLongCoordinates} for description.",
-    "lineNumber": 338,
+    "lineNumber": 337,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3582,7 +3546,7 @@
     "generator": false
   },
   {
-    "__docId__": 115,
+    "__docId__": 112,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3591,7 +3555,7 @@
     "longname": "src/index.js~NprOneSDK#searchStationsByCityAndState",
     "access": null,
     "description": "See {@link StationFinder#searchStationsByCityAndState} for description.",
-    "lineNumber": 349,
+    "lineNumber": 348,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3631,7 +3595,7 @@
     "generator": false
   },
   {
-    "__docId__": 116,
+    "__docId__": 113,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3640,7 +3604,7 @@
     "longname": "src/index.js~NprOneSDK#searchStationsByCity",
     "access": null,
     "description": "See {@link StationFinder#searchStationsByCity} for description.",
-    "lineNumber": 359,
+    "lineNumber": 358,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3670,7 +3634,7 @@
     "generator": false
   },
   {
-    "__docId__": 117,
+    "__docId__": 114,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3679,7 +3643,7 @@
     "longname": "src/index.js~NprOneSDK#searchStationsByState",
     "access": null,
     "description": "See {@link StationFinder#searchStationsByState} for description.",
-    "lineNumber": 369,
+    "lineNumber": 368,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3709,7 +3673,7 @@
     "generator": false
   },
   {
-    "__docId__": 118,
+    "__docId__": 115,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3718,7 +3682,7 @@
     "longname": "src/index.js~NprOneSDK#getStationDetails",
     "access": null,
     "description": "See {@link StationFinder#getStationDetails} for description.",
-    "lineNumber": 379,
+    "lineNumber": 378,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3749,7 +3713,7 @@
     "generator": false
   },
   {
-    "__docId__": 119,
+    "__docId__": 116,
     "kind": "method",
     "static": true,
     "variation": null,
@@ -3758,7 +3722,7 @@
     "longname": "src/index.js~NprOneSDK.getServiceUrl",
     "access": null,
     "description": "Returns the foundational path for a given service",
-    "lineNumber": 389,
+    "lineNumber": 388,
     "unknown": [
       {
         "tagName": "@returns",
@@ -3788,6 +3752,42 @@
     "generator": false
   },
   {
+    "__docId__": 117,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Response",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Response",
+    "memberof": "src/index.js",
+    "longname": "src/index.js~Response",
+    "access": null,
+    "description": ""
+  },
+  {
+    "__docId__": 118,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Headers",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Headers",
+    "memberof": "src/index.js",
+    "longname": "src/index.js~Headers",
+    "access": null,
+    "description": ""
+  },
+  {
+    "__docId__": 119,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "JsLogger",
+    "externalLink": "https://github.com/jonnyreeves/js-logger",
+    "memberof": "src/index.js",
+    "longname": "src/index.js~JsLogger",
+    "access": null,
+    "description": ""
+  },
+  {
     "__docId__": 120,
     "kind": "file",
     "static": true,
@@ -3810,7 +3810,7 @@
     "longname": "src/model/access-token.js~AccessToken",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/model/access-token.js",
+    "importPath": "@npr/npr-one-sdk/model/access-token.js",
     "importStyle": "AccessToken",
     "description": "A thin wrapper around the raw JSON returned from the authorization server to represent an access token",
     "lineNumber": 6,
@@ -4038,7 +4038,7 @@
     "longname": "src/model/action.js~Action",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/model/action.js",
+    "importPath": "@npr/npr-one-sdk/model/action.js",
     "importStyle": "Action",
     "description": "Actions that can be recorded for recommendations.\nFor more detail on user rating actions, see our narrative [Listening Service documentation](https://dev.npr.org/guide/services/listening/#Ratings)",
     "lineNumber": 5,
@@ -4372,7 +4372,7 @@
     "longname": "src/model/collection-doc.js~CollectionDoc",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/model/collection-doc.js",
+    "importPath": "@npr/npr-one-sdk/model/collection-doc.js",
     "importStyle": "CollectionDoc",
     "description": "A base model for any resources following our Collection Doc schema",
     "see": [
@@ -4612,7 +4612,7 @@
     "longname": "src/model/device-code.js~DeviceCode",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/model/device-code.js",
+    "importPath": "@npr/npr-one-sdk/model/device-code.js",
     "importStyle": "DeviceCode",
     "description": "A thin wrapper around the raw JSON returned from the authorization server to represent a device code/user code pair",
     "lineNumber": 6,
@@ -4882,7 +4882,7 @@
     "longname": "src/model/rating.js~Rating",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/model/rating.js",
+    "importPath": "@npr/npr-one-sdk/model/rating.js",
     "importStyle": "Rating",
     "description": "Container class for all metadata pertaining to an action that a user has taken against a recommendation.",
     "lineNumber": 4,
@@ -5168,7 +5168,7 @@
     "longname": "src/model/recommendation.js~Recommendation",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/model/recommendation.js",
+    "importPath": "@npr/npr-one-sdk/model/recommendation.js",
     "importStyle": "Recommendation",
     "description": "Container class for all metadata pertaining to a recommendation.\n\nProvides metadata and the recordAction method, which sends feedback on user actions to NPR's APIs and advances the flow of audio recommendations to the user",
     "lineNumber": 16,
@@ -6535,7 +6535,7 @@
     "longname": "src/model/station.js~Station",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/model/station.js",
+    "importPath": "@npr/npr-one-sdk/model/station.js",
     "importStyle": "Station",
     "description": "Container class for all metadata pertaining to an organization (member station) from the NPR One API",
     "lineNumber": 8,
@@ -7358,7 +7358,7 @@
     "longname": "src/model/user.js~User",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/model/user.js",
+    "importPath": "@npr/npr-one-sdk/model/user.js",
     "importStyle": "User",
     "description": "Container class for all metadata pertaining to a user object from the NPR One API",
     "lineNumber": 8,
@@ -7956,7 +7956,7 @@
     "longname": "src/util/fetch-util.js~delay",
     "access": "private",
     "export": false,
-    "importPath": "npr-one-sdk/util/fetch-util.js",
+    "importPath": "@npr/npr-one-sdk/util/fetch-util.js",
     "importStyle": null,
     "description": "Simulates a delay by wrapping a Promise around JavaScript's native `setTimeout` function.",
     "lineNumber": 13,
@@ -8002,7 +8002,7 @@
     "longname": "src/util/fetch-util.js~FetchUtil",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/util/fetch-util.js",
+    "importPath": "@npr/npr-one-sdk/util/fetch-util.js",
     "importStyle": "FetchUtil",
     "description": "A thin wrapper around the Fetch API which provides functionality to automatically\nrequest a new access token if an existing one has expired.",
     "lineNumber": 20,
@@ -8267,7 +8267,7 @@
     "longname": "src/util/recommendation-creator.js~createRecommendations",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/util/recommendation-creator.js",
+    "importPath": "@npr/npr-one-sdk/util/recommendation-creator.js",
     "importStyle": "createRecommendations",
     "description": "Creates recommendation objects from collection doc ensuring that necessary\nproperties are present",
     "lineNumber": 14,
@@ -8330,7 +8330,7 @@
     "longname": "src/util/validator.js~Validator",
     "access": null,
     "export": true,
-    "importPath": "npr-one-sdk/util/validator.js",
+    "importPath": "@npr/npr-one-sdk/util/validator.js",
     "importStyle": "Validator",
     "description": "A utility class which performs validations by checking of required object properties exist.",
     "lineNumber": 4,

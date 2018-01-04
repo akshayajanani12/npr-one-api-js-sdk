@@ -1,104 +1,104 @@
 window.esdocSearchIndex = [
   [
-    "npr-one-sdk/model/access-token.js~accesstoken",
+    "@npr/npr-one-sdk/model/access-token.js~accesstoken",
     "class/src/model/access-token.js~AccessToken.html",
-    "<span>AccessToken</span> <span class=\"search-result-import-path\">npr-one-sdk/model/access-token.js</span>",
+    "<span>AccessToken</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/model/access-token.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/model/action.js~action",
+    "@npr/npr-one-sdk/model/action.js~action",
     "class/src/model/action.js~Action.html",
-    "<span>Action</span> <span class=\"search-result-import-path\">npr-one-sdk/model/action.js</span>",
+    "<span>Action</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/model/action.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/error/api-error.js~apierror",
+    "@npr/npr-one-sdk/error/api-error.js~apierror",
     "class/src/error/api-error.js~ApiError.html",
-    "<span>ApiError</span> <span class=\"search-result-import-path\">npr-one-sdk/error/api-error.js</span>",
+    "<span>ApiError</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/error/api-error.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/controller/authorization.js~authorization",
+    "@npr/npr-one-sdk/controller/authorization.js~authorization",
     "class/src/controller/authorization.js~Authorization.html",
-    "<span>Authorization</span> <span class=\"search-result-import-path\">npr-one-sdk/controller/authorization.js</span>",
+    "<span>Authorization</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/controller/authorization.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/model/collection-doc.js~collectiondoc",
+    "@npr/npr-one-sdk/model/collection-doc.js~collectiondoc",
     "class/src/model/collection-doc.js~CollectionDoc.html",
-    "<span>CollectionDoc</span> <span class=\"search-result-import-path\">npr-one-sdk/model/collection-doc.js</span>",
+    "<span>CollectionDoc</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/model/collection-doc.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/model/device-code.js~devicecode",
+    "@npr/npr-one-sdk/model/device-code.js~devicecode",
     "class/src/model/device-code.js~DeviceCode.html",
-    "<span>DeviceCode</span> <span class=\"search-result-import-path\">npr-one-sdk/model/device-code.js</span>",
+    "<span>DeviceCode</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/model/device-code.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/util/fetch-util.js~fetchutil",
+    "@npr/npr-one-sdk/util/fetch-util.js~fetchutil",
     "class/src/util/fetch-util.js~FetchUtil.html",
-    "<span>FetchUtil</span> <span class=\"search-result-import-path\">npr-one-sdk/util/fetch-util.js</span>",
+    "<span>FetchUtil</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/util/fetch-util.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/controller/identity.js~identity",
+    "@npr/npr-one-sdk/controller/identity.js~identity",
     "class/src/controller/identity.js~Identity.html",
-    "<span>Identity</span> <span class=\"search-result-import-path\">npr-one-sdk/controller/identity.js</span>",
+    "<span>Identity</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/controller/identity.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/controller/listening.js~listening",
+    "@npr/npr-one-sdk/controller/listening.js~listening",
     "class/src/controller/listening.js~Listening.html",
-    "<span>Listening</span> <span class=\"search-result-import-path\">npr-one-sdk/controller/listening.js</span>",
+    "<span>Listening</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/controller/listening.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/index.js~npronesdk",
+    "@npr/npr-one-sdk/index.js~npronesdk",
     "class/src/index.js~NprOneSDK.html",
-    "<span>NprOneSDK</span> <span class=\"search-result-import-path\">npr-one-sdk/index.js</span>",
+    "<span>NprOneSDK</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/index.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/model/rating.js~rating",
+    "@npr/npr-one-sdk/model/rating.js~rating",
     "class/src/model/rating.js~Rating.html",
-    "<span>Rating</span> <span class=\"search-result-import-path\">npr-one-sdk/model/rating.js</span>",
+    "<span>Rating</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/model/rating.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/model/recommendation.js~recommendation",
+    "@npr/npr-one-sdk/model/recommendation.js~recommendation",
     "class/src/model/recommendation.js~Recommendation.html",
-    "<span>Recommendation</span> <span class=\"search-result-import-path\">npr-one-sdk/model/recommendation.js</span>",
+    "<span>Recommendation</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/model/recommendation.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/model/station.js~station",
+    "@npr/npr-one-sdk/model/station.js~station",
     "class/src/model/station.js~Station.html",
-    "<span>Station</span> <span class=\"search-result-import-path\">npr-one-sdk/model/station.js</span>",
+    "<span>Station</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/model/station.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/controller/station-finder.js~stationfinder",
+    "@npr/npr-one-sdk/controller/station-finder.js~stationfinder",
     "class/src/controller/station-finder.js~StationFinder.html",
-    "<span>StationFinder</span> <span class=\"search-result-import-path\">npr-one-sdk/controller/station-finder.js</span>",
+    "<span>StationFinder</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/controller/station-finder.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/model/user.js~user",
+    "@npr/npr-one-sdk/model/user.js~user",
     "class/src/model/user.js~User.html",
-    "<span>User</span> <span class=\"search-result-import-path\">npr-one-sdk/model/user.js</span>",
+    "<span>User</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/model/user.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/util/validator.js~validator",
+    "@npr/npr-one-sdk/util/validator.js~validator",
     "class/src/util/validator.js~Validator.html",
-    "<span>Validator</span> <span class=\"search-result-import-path\">npr-one-sdk/util/validator.js</span>",
+    "<span>Validator</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/util/validator.js</span>",
     "class"
   ],
   [
-    "npr-one-sdk/util/recommendation-creator.js~createrecommendations",
+    "@npr/npr-one-sdk/util/recommendation-creator.js~createrecommendations",
     "function/index.html#static-function-createRecommendations",
-    "<span>createRecommendations</span> <span class=\"search-result-import-path\">npr-one-sdk/util/recommendation-creator.js</span>",
+    "<span>createRecommendations</span> <span class=\"search-result-import-path\">@npr/npr-one-sdk/util/recommendation-creator.js</span>",
     "function"
   ],
   [
@@ -1363,13 +1363,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/unit/controller/listening.js.html#lineNumber581",
+    "test-file/unit/controller/listening.js.html#lineNumber569",
     "Listening queueRecommendationFromChannel should throw a TypeError if a channel is specified but is not a valid string",
     "test"
   ],
   [
     "",
-    "test-file/unit/controller/listening.js.html#lineNumber569",
+    "test-file/unit/controller/listening.js.html#lineNumber581",
     "Listening queueRecommendationFromChannel should throw a TypeError if a channel is specified but is not a valid string",
     "test"
   ],
@@ -1639,13 +1639,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/unit/index.js.html#lineNumber181",
+    "test-file/unit/index.js.html#lineNumber187",
     "NprOneSDK getRecommendation should call the correct service controller method with non-default param values",
     "test"
   ],
   [
     "",
-    "test-file/unit/index.js.html#lineNumber187",
+    "test-file/unit/index.js.html#lineNumber181",
     "NprOneSDK getRecommendation should call the correct service controller method with non-default param values",
     "test"
   ],

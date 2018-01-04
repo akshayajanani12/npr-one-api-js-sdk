@@ -77,7 +77,7 @@
 
 <div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="npr-one-api-sdk">NPR One API SDK</h1>
 <p>A <a href="https://github.com/umdjs/umd">Universal JavaScript Module</a> for interfacing with the <a href="https://dev.npr.org/api/">NPR One API</a>, suitable for both client-side and server-side projects.</p>
-<p><a href="https://www.npmjs.com/package/npr-one-sdk"><img src="https://img.shields.io/npm/v/npr-one-sdk.svg" alt="npm"></a> <a href="https://travis-ci.org/npr/npr-one-api-js-sdk"><img src="https://travis-ci.org/npr/npr-one-api-js-sdk.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/github/npr/npr-one-api-js-sdk?branch=master"><img src="https://coveralls.io/repos/github/npr/npr-one-api-js-sdk/badge.svg?branch=master" alt="Coverage Status"></a> <a href="https://npr.github.io/npr-one-api-js-sdk/docs/"><img src="https://npr.github.io/npr-one-api-js-sdk/docs/badge.svg" alt="Documentation coverage"></a> <a href="https://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="Commitizen friendly"></a> <a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="semantic-release"></a></p>
+<p><a href="https://www.npmjs.com/package/npr-one-sdk"><img src="https://img.shields.io/npm/v/@npr/npr-one-sdk.svg" alt="npm"></a> <a href="https://travis-ci.org/npr/npr-one-api-js-sdk"><img src="https://travis-ci.org/npr/npr-one-api-js-sdk.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/github/npr/npr-one-api-js-sdk?branch=master"><img src="https://coveralls.io/repos/github/npr/npr-one-api-js-sdk/badge.svg?branch=master" alt="Coverage Status"></a> <a href="https://npr.github.io/npr-one-api-js-sdk/docs/"><img src="https://npr.github.io/npr-one-api-js-sdk/docs/badge.svg" alt="Documentation coverage"></a> <a href="https://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="Commitizen friendly"></a> <a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="semantic-release"></a></p>
 <h5 id="table-of-contents">Table of Contents</h5>
 <ul>
 <li><a href="#background">Background</a></li>
@@ -123,12 +123,12 @@
 <h2 id="installation">Installation</h2>
 <p>Depending on your environment, there are various methods you can use to add this library to your project.</p>
 <h3 id="using-npm">Using NPM</h3>
-<p>Assuming a recent version of <a href="https://nodejs.org">node.js</a> (v0.12.x or newer) and <a href="https://npmjs.org">npm</a> are installed globally on your system, you can do:</p>
-<pre><code><code class="source-code prettyprint">npm install npr-one-sdk --save</code>
+<p>Assuming a recent version of <a href="https://nodejs.org">node.js</a> (v4.x or newer) and <a href="https://npmjs.org">npm</a> are installed globally on your system, you can do:</p>
+<pre><code><code class="source-code prettyprint">npm install @npr/npr-one-sdk --save</code>
 </code></pre><p>...to add the latest stable version of this SDK to your existing node.js project.</p>
 <p>If you do not already have an existing node.js project, you can start one with:</p>
 <pre><code><code class="source-code prettyprint">npm init</code>
-</code></pre><p>...which will ask you some questions and generate a <code>package.json</code> for you. You can then run <code>npm install npr-one-sdk --save</code> to save the SDK to your new project&apos;s list of dependencies.</p>
+</code></pre><p>...which will ask you some questions and generate a <code>package.json</code> for you. You can then run <code>npm install @npr/npr-one-sdk --save</code> to save the SDK to your new project&apos;s list of dependencies.</p>
 <h3 id="using-bower">Using Bower</h3>
 <p>For those using <a href="https://nodejs.org">node.js</a> with <a href="https://bower.io/">Bower</a> as your frontend package manager, we&apos;ve also made this SDK available there. Run:</p>
 <pre><code><code class="source-code prettyprint">bower install npr-one-sdk --save</code>
@@ -148,7 +148,7 @@
 <p><strong>Note:</strong> All of the following <code>config</code> settings are offered as examples. In most use cases, you will provide either a proxy base URL or an access token, but likely not both.</p>
 <h4 id="es6">ES6</h4>
 <p>If you&apos;re using ES6, we are generally assuming that you are already using <a href="https://npmjs.org">npm</a> as your frontend package manager in combination with a modern JavaScript module bundler such as <a href="https://webpack.github.io/">Webpack</a>, <a href="https://browserify.org/">Browserify</a> or <a href="https://jspm.io/">jspm</a>. Those tools will typically resolve your dependencies, pulling in our distribution files from the proper location, so all you need to do to import the SDK and use it is:</p>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">import NprOneSDK from &apos;npr-one-sdk&apos;;
+<pre><code class="lang-javascript"><code class="source-code prettyprint">import NprOneSDK from &apos;@npr/npr-one-sdk&apos;;
 const nprOneSDK = new NprOneSDK();
 
 NprOneSDK.config = {
@@ -172,7 +172,7 @@ NprOneSDK.config = {
 <h3 id="server-side">Server-side</h3>
 <p>Because node.js already takes care of loading dependencies, the only prerequisite to getting the SDK set up is knowing how to instantiate the library. The syntax also varies based on whether you are using ES5 or ES6, but since ES6 is still fairly uncommon in the server-side world, ES5 will be considered canonical here.</p>
 <p>In ES5 (most common):</p>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">var NprOneSDK = require(&apos;npr-one-sdk&apos;).default;
+<pre><code class="lang-javascript"><code class="source-code prettyprint">var NprOneSDK = require(&apos;@npr/npr-one-sdk&apos;).default;
 var nprOneSDK = new NprOneSDK();
 
 NprOneSDK.config = {
@@ -181,7 +181,7 @@ NprOneSDK.config = {
 };</code>
 </code></pre>
 <p>In ES6 (less common):</p>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">const NprOneSDK = require(&apos;npr-one-sdk&apos;).default;
+<pre><code class="lang-javascript"><code class="source-code prettyprint">const NprOneSDK = require(&apos;@npr/npr-one-sdk&apos;).default;
 const nprOneSDK = new NprOneSDK();
 
 NprOneSDK.config = {
