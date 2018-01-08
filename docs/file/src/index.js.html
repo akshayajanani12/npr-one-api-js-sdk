@@ -113,7 +113,7 @@ export class NprOneSDK {
         this._stationfinder = new StationFinder();
 
         // setup the default config
-        NprOneSDK.config; // eslint-disable-line
+        NprOneSDK._initConfig();
     }
 
     /**
@@ -135,24 +135,7 @@ export class NprOneSDK {
      * @type {Config}
      */
     static get config() {
-        if (!NprOneSDK._config) {
-            NprOneSDK._config = {
-                apiBaseUrl: &apos;https://api.npr.org&apos;,
-                apiVersion: &apos;v2&apos;,
-                authProxyBaseUrl: &apos;&apos;,
-                newDeviceCodePath: &apos;/device&apos;,
-                pollDeviceCodePath: &apos;/device/poll&apos;,
-                refreshTokenPath: &apos;/refresh&apos;,
-                tempUserPath: &apos;/temporary&apos;,
-                logoutPath: &apos;/logout&apos;,
-                accessToken: &apos;&apos;,
-                clientId: &apos;&apos;,
-                advertisingId: &apos;&apos;,
-                advertisingTarget: &apos;&apos;,
-            };
-        }
-
-        /** @type {Config} */
+        NprOneSDK._initConfig();
         return NprOneSDK._config;
     }
 
@@ -162,9 +145,7 @@ export class NprOneSDK {
      * @type {Config}
      */
     static set config(value) {
-        if (!NprOneSDK._config) {
-            NprOneSDK.config; // eslint-disable-line
-        }
+        NprOneSDK._initConfig();
         Object.assign(NprOneSDK._config, value);
     }
 
@@ -469,6 +450,30 @@ export class NprOneSDK {
             return `${NprOneSDK.config.apiBaseUrl}/${service}/v3`;
         }
         return `${NprOneSDK.config.apiBaseUrl}/${service}/${NprOneSDK.config.apiVersion}`;
+    }
+
+    /**
+     * Initializes the config using default settings.
+     *
+     * @private
+     */
+    static _initConfig() {
+        if (!NprOneSDK._config) {
+            NprOneSDK._config = {
+                apiBaseUrl: &apos;https://api.npr.org&apos;,
+                apiVersion: &apos;v2&apos;,
+                authProxyBaseUrl: &apos;&apos;,
+                newDeviceCodePath: &apos;/device&apos;,
+                pollDeviceCodePath: &apos;/device/poll&apos;,
+                refreshTokenPath: &apos;/refresh&apos;,
+                tempUserPath: &apos;/temporary&apos;,
+                logoutPath: &apos;/logout&apos;,
+                accessToken: &apos;&apos;,
+                clientId: &apos;&apos;,
+                advertisingId: &apos;&apos;,
+                advertisingTarget: &apos;&apos;,
+            };
+        }
     }
 }
 export default NprOneSDK;
